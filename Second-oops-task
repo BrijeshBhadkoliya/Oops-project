@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, button {
+            padding: 8px;
+            width: 100%;
+            margin-top: 5px;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        
+        <div class="section">
+            <h2>Create Bank Account</h2>
+            <label for="accNo">Account Number:</label>
+            <input type="text" id="accNo" placeholder="Enter account number">
+            
+            <label for="balance">Opening Balance:</label>
+            <input type="number" id="balance" placeholder="Enter balance">
+            
+            <button onclick="createAccount()">Create Account</button>
+            
+            <div class="output" id="accountOutput"></div>
+            
+            <h3>Manage Account</h3>
+            <label for="depositAmount">Deposit Amount:</label>
+            <input type="number" id="depositAmount" placeholder="Enter amount">
+            
+            <button onclick="depositMoney()">Deposit</button>
+            
+            <label for="withdrawAmount">Withdraw Amount:</label>
+            <input type="number" id="withdrawAmount" placeholder="Enter amount">
+            
+            <button onclick="withdrawMoney()">Withdraw</button>
+            
+            <div class="output" id="balanceOutput"></div>
+        </div>
+    </div>
+    <script>
+          class BankAccount {
+        constructor(accNo, balance) {
+            this.accNo = accNo;
+            this.balance = balance;
+        }
+
+        deposit(amount) {
+            this.balance += amount;
+            return `Deposited: ${amount}\nAccount Balance: ${this.balance}`;
+        }
+
+        withdraw(amount) {
+            if (amount > this.balance) {
+                return `Want to withdraw: ${amount}\nInsufficient balance\nAccount Balance: ${this.balance}`;
+            } else {
+                this.balance -= amount;
+                return `Withdrawn: ${amount}\nAccount Balance: ${this.balance}`;
+            }
+        }
+
+        getBalance() {
+            return `Account Balance: ${this.balance}`;
+        }
+    }
+
+    let currentAccount = null;
+
+    
+
+    function createAccount() {
+        const accNo = document.getElementById('accNo').value;
+        const balance = parseFloat(document.getElementById('balance').value);
+
+        currentAccount = new BankAccount(accNo, balance);
+        document.getElementById('accountOutput').innerText = `Account Created:\nA/c No.: ${currentAccount.accNo}\n${currentAccount.getBalance()}`;
+    }
+
+    function depositMoney() {
+        const depositAmount = parseFloat(document.getElementById('depositAmount').value);
+        
+        if (currentAccount) {
+            const result = currentAccount.deposit(depositAmount);
+            document.getElementById('balanceOutput').innerText = result;
+        } else {
+            alert('Please create an account first.');
+        }
+    }
+
+    function withdrawMoney() {
+        const withdrawAmount = parseFloat(document.getElementById('withdrawAmount').value);
+        
+        if (currentAccount) {
+            const result = currentAccount.withdraw(withdrawAmount);
+            document.getElementById('balanceOutput').innerText = result;
+        } else {
+            alert('Please create an account first.');
+        }
+    }
+    </script>
+</body>
+</html>
